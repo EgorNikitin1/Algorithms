@@ -3,6 +3,7 @@ from math import sqrt
 
 
 def rosenbrock(f, x0, err, delta0, _alpha=3, _beta=-0.5, d=((1, 0), (0, 1)), _lambda=(1, 1), N=3):
+    """Метод Розенброка"""
     yt = x0  # Шаг 1
     xp = x0
     while True:
