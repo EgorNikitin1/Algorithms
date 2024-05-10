@@ -6,29 +6,27 @@ def rosenbrock(f, x0, err, delta0, _alpha=3, _beta=-0.5, d=((1, 0), (0, 1)), _la
     """Метод Розенброка"""
     yt = x0  # Шаг 1
     xp = x0
+    k = 0
     while True:
         l = 0
         delta = tuple(delta0)
         delta_update = [0.0, 0.0]
+        print(f"k = {k}")
         while True:
-            print(f"k")
             yp = yt
             for i in range(2):  # Шаг 2
                 fun_aug = f(yt[0] + delta[i] * d[i][0], yt[1] + delta[i] * d[i][1])
                 fun = f(*yt)
-                print(f"fun_aug = {fun_aug}")
-                print(f"fun = {fun}")
                 if fun_aug < fun:  # Шаг удачен
                     yt = yt[0] + delta[i] * d[i][0], yt[1] + delta[i] * d[i][1]
-                    print(f"yt = {yt}")
                     delta_update[i] = _alpha * delta[i]
-                    print(f"delta{i + 1} = {delta_update[i]}")
+                    print("S", end='\t')
                 else:  # Шаг неудачен
                     yt = yt
-                    print(f"yt = {yt}")
                     delta_update[i] = _beta * delta[i]
-                    print(f"delta{i + 1} = {delta_update[i]}")
-                print()
+                    print("F", end='\t')
+                print(f"f(y+delta) = {round(fun_aug, 4)}\tf(y) = {round(fun, 4)}\ty = {tuple(map(lambda x: round(x, 4), yt))}\tdelta{i + 1} = {round(delta_update[i], 4)}")
+            print()
 
             if f(*yt) < f(*yp):  # Шаг 3
                 yt = yt
@@ -57,8 +55,11 @@ def rosenbrock(f, x0, err, delta0, _alpha=3, _beta=-0.5, d=((1, 0), (0, 1)), _la
             b = a[0], (a[1][0] - temp * d[0], a[1][1] - temp * d[1])
             d = d, (b[1][0] / sqrt(b[1][0] ** 2 + b[1][1] ** 2), b[1][1] / sqrt(b[1][0] ** 2 + b[1][1] ** 2))
             xp = xt
+            k += 1
         else:
-            print(xt)
+            print("Minimum is found:")
+            print(f"x = {xt}")
+            print("f(x) = ", end='')
             print(f(*xt))
             break
     return xt
